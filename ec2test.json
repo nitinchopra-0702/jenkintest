@@ -1,0 +1,79 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Launch the ec2 instances",
+  "Parameters": {
+    "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName"
+    },
+    "ImageId": {
+      "Type": "String"
+    },
+    "InstanceType": {
+      "Type": "String",
+      "Default": "t2.medium"
+    },  
+    "SecurityGroupWinDom": {
+      "Type": "String"
+    },     
+    "SubnetA": {
+      "Type": "String"
+    },   
+    "Name": {
+      "Type": "String",
+      "Description": "Enter the hostname",
+      "Default": ""
+    }  
+  },
+  "Resources": {
+    "Newserver": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "ImageId": {
+          "Ref": "ImageId"
+        },
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+        "SubnetId": {
+          "Ref": "SubnetA"
+        },
+        "SecurityGroupIds": [
+          {
+            "Ref": "SecurityGroupWinDom"
+          }         
+          
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "Name"
+            }
+          }
+         
+        ]
+      }
+    }    
+  },
+  "Outputs": {
+    "Newserver": {
+      "Value": {
+        "Ref": "Newserver"
+      }
+    },
+    "PrivateIPA": {
+      "Description": "Private IP address of the newly created EC2 instance",
+      "Value": {
+        "Fn::GetAtt": [
+          "Newserver",
+          "PrivateIp"
+        ]
+      }
+    }
+   
+   
+  }
+}
