@@ -1,0 +1,13 @@
+---
+  - name: Playbook
+    hosts: local
+    become: yes
+    become_user: root
+    tasks:
+	- name: create a stack, specify role that cloudformation assumes
+		amazon.aws.cloudformation:
+			stack_name: "ansible-cloudformation"
+			state: "present"
+			region: "us-east-1"
+			disable_rollback: true
+			template: "ec2test.json"
